@@ -14,16 +14,20 @@ class graph:
         self.equation = equation
         self.image = Image.new(mode = "RGB", size = (self.width, self.height))
         self.data = []
-    
+
+    def complexToHSV(self, complex):
+        return((cmath.phase(complex)*40.74368+128,1,1))
+
     def render(self):
         print("starting")
         self.data = []
         for y in range(self.height):
             for x in range(self.height):
-                self.data.append(self.equation(complex(
+                self.data.append(self.complexToHSV(self.equation(complex(
                     x/self.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
-                    )))
+                    ))))
+        print(self.data)
 
 my_graph = graph()
 my_graph.render()
