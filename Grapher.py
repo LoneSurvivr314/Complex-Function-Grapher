@@ -5,8 +5,8 @@ def comlexFunction(complexInput):
     return complexInput**2
 
 class graph:
-    def __init__(self, xmin = -1, xmax = 1, ymin = -9/16, ymax = -9/16,
-                 width = 1920, height = 1080,
+    def __init__(self, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
+                 width = round(1920/4), height = round(1080/4),
                  equation = lambda z: z):
         self.width = width
         self.height = height
@@ -31,7 +31,7 @@ class graph:
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     ))))
         self.image.putdata(self.data)
-        print(len(self.data))
+        print(len(self.data) + "points calculated")
         #textOutput = open(r"C:\Users\jeffr\Desktop\testOutput.txt","w")
         #textOutput.write(str(self.data))
         self.image.show()
