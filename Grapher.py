@@ -12,7 +12,7 @@ class graph:
         self.height = height
         self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax}
         self.equation = equation
-        self.image = Image.new(mode = "RGB", size = (self.width, self.height))
+        self.image = Image.new(mode = "HSV", size = (self.width, self.height))
         self.data = []
 
     def complexToHSV(self, complex):
@@ -24,15 +24,17 @@ class graph:
         print("starting")
         self.data = []
         for y in range(self.height):
-            for x in range(self.height):
-                self.data.append(self.complexToHSV(self.equation(complex(
+            for x in range(self.width):
+                self.data.append(
+                    self.complexToHSV(self.equation(complex(
                     x/self.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     ))))
         self.image.putdata(self.data)
-        textOutput = open(r"C:\Users\jeffr\Desktop\testOutput.txt","w")
-        textOutput.write(str(self.data))
-        #self.image.show()
+        print(len(self.data))
+        #textOutput = open(r"C:\Users\jeffr\Desktop\testOutput.txt","w")
+        #textOutput.write(str(self.data))
+        self.image.show()
 
 
 my_graph = graph()
