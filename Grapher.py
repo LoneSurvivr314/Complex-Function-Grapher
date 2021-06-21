@@ -16,7 +16,9 @@ class graph:
         self.data = []
 
     def complexToHSV(self, complex):
-        return((cmath.phase(complex)*40.74368+128,1,1))
+        angle = cmath.phase(complex)
+        positiveAngle = angle if angle >= 0 else angle + 2*3.14159265358979 #change angle from (-pi, pi) to (0, 2pi)
+        return((round(positiveAngle * 40.7436654315),256,256)) #change angle from (0, 2pi) to (0,256)
 
     def render(self):
         print("starting")
@@ -27,7 +29,11 @@ class graph:
                     x/self.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     ))))
-        print(self.data)
+        self.image.putdata(self.data)
+        textOutput = open(r"C:\Users\jeffr\Desktop\testOutput.txt","w")
+        textOutput.write(str(self.data))
+        #self.image.show()
+
 
 my_graph = graph()
 my_graph.render()
