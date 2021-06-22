@@ -31,7 +31,7 @@ class graph:
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     ))))
         self.image.putdata(self.data)
-        print(len(self.data) + "points calculated")
+        print(str(len(self.data)) + " points calculated")
         #textOutput = open(r"C:\Users\jeffr\Desktop\testOutput.txt","w")
         #textOutput.write(str(self.data))
         self.image.show()
