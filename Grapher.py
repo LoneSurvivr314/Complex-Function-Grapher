@@ -6,7 +6,7 @@ def comlexFunction(complexInput):
 
 class graph:
     def __init__(self, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
-                 width = round(1920/4), height = round(1080/4),
+                 width = round(1920/1), height = round(1080/1),
                  equation = lambda z: z):
         self.width = width
         self.height = height
