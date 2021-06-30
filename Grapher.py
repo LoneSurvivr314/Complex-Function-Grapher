@@ -6,8 +6,8 @@ def comlexFunction(complexInput):
 
 class graph:
     def __init__(self, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
-                 width = round(1920/1), height = round(1080/1),
-                 equation = lambda z: z):
+                 width = round(1920/4), height = round(1080/4),
+                 equation = lambda z: (1j)**(z**2)):
         self.width = width
         self.height = height
         self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax}
@@ -37,5 +37,5 @@ class graph:
         self.image.show()
 
 
-my_graph = graph()
+my_graph = graph(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8)
 my_graph.render()
