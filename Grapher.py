@@ -2,21 +2,21 @@ import cmath
 import math
 import random as rand
 from PIL import Image
-def comlexFunction(complexInput):
-    return complexInput**2
 
 def rephase(phase): # Remaps the phase of a number from (-pi,pi) to (0,2pi)
         return(phase if phase >= 0 else phase + 2*cmath.pi)
 
 class keyframe:
+    # a keyframe holds data about
     def __init__(self, parent, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
                  equation = lambda z: (1j)**(z**2)):
         self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax}
         self.equation = equation
         self.data = []
         self.image = Image.new("HSV", (parent.width, parent.height))
+        self.data = []
     
-    def complexToHSV(self, complex):
+    def complexToHSV(self, complex): #return (H,S,V) tuple from a complex input
         phase = rephase(cmath.phase(complex))
         return((
             round(phase * 40.7436654315), #change angle from (0, 2pi) to (0,256)
@@ -24,19 +24,26 @@ class keyframe:
             round(256 - 64 * (math.log(abs(complex),2) % 1))
             ))
 
-    def render(self, parent, show = True):
-        print("starting")
-        self.data = []
+    def calculateData(self, parent): #calculate complex numbers for each point supplied
         for y in range(parent.height):
             for x in range(parent.width):
                 self.data.append(
-                    self.complexToHSV(self.equation(complex(
+                    self.equation(complex(
                     x/parent.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
                     y/parent.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
-                    ))))
-        self.image.putdata(self.data)
-        print(str(len(self.data)) + " points calculated")
+                    )))
         
+    def render(self, parent, show = True):
+        print("starting")
+        if self.data == []: #if data is not calculated yet, calculate, then run render again
+            self.calculateData(parent)
+            print("calculated data")
+            self.render(parent, show = show)
+        else:
+            self.data = list(map(self.complexToHSV, self.data)) #if data is calculated, map complexToHSV over the data
+            print("mapped data")
+        print()
+        self.image.putdata(self.data) #write data to image
         if show:
             self.image.show()
 
