@@ -1,8 +1,12 @@
 import cmath
+import math
 import random as rand
 from PIL import Image
 def comlexFunction(complexInput):
     return complexInput**2
+
+def rephase(phase): # Remaps the phase of a number from (-pi,pi) to (0,2pi)
+        return(phase if phase >= 0 else phase + 2*cmath.pi)
 
 class graph:
     def __init__(self, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
@@ -14,13 +18,16 @@ class graph:
         self.equation = equation
         self.image = Image.new(mode = "HSV", size = (self.width, self.height))
         self.data = []
-
+    
     def complexToHSV(self, complex):
-        angle = cmath.phase(complex)
-        positiveAngle = angle if angle >= 0 else angle + 2*3.14159265358979 #change angle from (-pi, pi) to (0, 2pi)
-        return((round(positiveAngle * 40.7436654315),256,256)) #change angle from (0, 2pi) to (0,256)
+        phase = rephase(cmath.phase(complex))
+        return((
+            round(phase * 40.7436654315), #change angle from (0, 2pi) to (0,256)
+            round(256 - 32 * (math.log(abs(complex),2) % 1)),
+            round(256 - 64 * (math.log(abs(complex),2) % 1))
+            ))
 
-    def render(self):
+    def render(self, show = True):
         print("starting")
         self.data = []
         for y in range(self.height):
@@ -34,8 +41,9 @@ class graph:
         print(str(len(self.data)) + " points calculated")
         #textOutput = open(r"C:\Users\jeffr\Desktop\testOutput.txt","w")
         #textOutput.write(str(self.data))
-        self.image.show()
+        if show:
+            self.image.show()
 
 
-my_graph = graph(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8)
-my_graph.render()
+my_graph = graph(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, width = 960, height = 540)
+my_graph.render(show = True)
