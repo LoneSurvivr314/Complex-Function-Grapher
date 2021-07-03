@@ -7,7 +7,7 @@ def rephase(phase): # Remaps the phase of a number from (-pi,pi) to (0,2pi)
         return(phase if phase >= 0 else phase + 2*cmath.pi)
 
 class keyframe:
-    # a keyframe holds data about
+    # a keyframe holds data about view are and equation, and knows how to render itself.
     def __init__(self, parent, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
                  equation = lambda z: (1j)**(z**2)):
         self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax}
@@ -34,12 +34,13 @@ class keyframe:
                     )))
         
     def render(self, parent, show = True):
-        print("starting")
         if self.data == []: #if data is not calculated yet, calculate, then run render again
+            print("calculating data")
             self.calculateData(parent)
             print("calculated data")
             self.render(parent, show = show)
         else:
+            print("mapping data")
             self.data = list(map(self.complexToHSV, self.data)) #if data is calculated, map complexToHSV over the data
             print("mapped data")
         print()
@@ -49,6 +50,7 @@ class keyframe:
 
 
 class graph:
+    # a graph holds a collection ofn keyframes, and controls them.
     def __init__(self, width = 480, height = 270):
         self.keyframes = []
         self.width = width
@@ -61,6 +63,6 @@ class graph:
     def preview(self, keyframe = 0):
         self.keyframes[0].render(self, show = True)
 
-my_graph = graph(width = 960, height = 540)
+my_graph = graph(width = 480, height = 270)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
 my_graph.preview(keyframe= 0)
