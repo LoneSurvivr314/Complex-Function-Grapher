@@ -33,20 +33,18 @@ class keyframe:
                     y/parent.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     )))
         
-    def render(self, parent, show = True):
-        if self.data == []: #if data is not calculated yet, calculate, then run render again
+    def render(self, parent, data, show = True):
+        if data == []: #if data is not calculated yet, calculate, then run render again
             print("calculating data")
             self.calculateData(parent)
             print("calculated data")
-            self.render(parent, show = show)
+            self.render(parent, data, show = show)
         else:
             print("mapping data")
-            self.data = list(map(self.complexToHSV, self.data)) #if data is calculated, map complexToHSV over the data
             print("mapped data")
-        print()
-        self.image.putdata(self.data) #write data to image
-        if show:
-            self.image.show()
+            self.image.putdata(list(map(self.complexToHSV, self.data))) #if data is calculated, map complexToHSV over the data and write data to image
+            if show:
+                self.image.show()
 
 
 class graph:
@@ -61,8 +59,11 @@ class graph:
         self.keyframes.append(keyframe(self, xmin, xmax, ymin, ymax, equation))
 
     def preview(self, keyframe = 0):
-        self.keyframes[0].render(self, show = True)
+        self.keyframes[keyframe].render(self, self.keyframes[keyframe].data, show = True)
 
+    def renderAnimationself(self):
+        for keyfram in self.keyframes:
+            keyframe.calculateData(self)
 my_graph = graph(width = 480, height = 270)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
 my_graph.preview(keyframe= 0)
