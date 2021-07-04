@@ -20,11 +20,14 @@ class keyframe:
     
     def complexToHSV(self, complex): #return (H,S,V) tuple from a complex input
         phase = rephase(cmath.phase(complex))
-        return((
-            round(phase * 40.7436654315), #change angle from (0, 2pi) to (0,256)
-            round(256 - 32 * (math.log(abs(complex),2) % 1)),
-            round(256 - 64 * (math.log(abs(complex) + math.epsilon,2) % 1))
-            ))
+        try:
+            return((
+                round(phase * 40.7436654315), #change angle from (0, 2pi) to (0,256)
+                round(256 - 32 * (math.log(abs(complex), 2) % 1)),
+                round(256 - 64 * (math.log(abs(complex), 2) % 1))
+                ))
+        except ValueError:
+            return((0, 224, 192))
 
     def calculateData(self): #calculate complex numbers for each point supplied
         for y in range(self.height):
@@ -66,8 +69,8 @@ class graph:
     def renderAnimation(self):
         for keyframe in self.keyframes:
             keyframe.calculateData()
-my_graph = graph(width = 480, height = 270)
-my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: 0)
+my_graph = graph(width = 1920, height = 1080)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
 my_graph.renderAnimation()
 my_graph.preview(0)
