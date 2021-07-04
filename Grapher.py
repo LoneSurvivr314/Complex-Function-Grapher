@@ -11,9 +11,11 @@ class keyframe:
     def __init__(self, parent, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
                  equation = lambda z: (1j)**(z**2)):
         self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax}
+        self.width = parent.width
+        self.height = parent.height
         self.equation = equation
         self.data = []
-        self.image = Image.new("HSV", (parent.width, parent.height))
+        self.image = Image.new("HSV", (self.width, self.height))
         self.data = []
     
     def complexToHSV(self, complex): #return (H,S,V) tuple from a complex input
@@ -24,21 +26,21 @@ class keyframe:
             round(256 - 64 * (math.log(abs(complex),2) % 1))
             ))
 
-    def calculateData(self, parent): #calculate complex numbers for each point supplied
-        for y in range(parent.height):
-            for x in range(parent.width):
+    def calculateData(self): #calculate complex numbers for each point supplied
+        for y in range(self.height):
+            for x in range(self.width):
                 self.data.append(
                     self.equation(complex(
-                    x/parent.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
-                    y/parent.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
+                    x/self.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
+                    y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     )))
         
-    def render(self, parent, data, show = True):
+    def render(self, data, show = True):
         if data == []: #if data is not calculated yet, calculate, then run render again
             print("calculating data")
-            self.calculateData(parent)
+            self.calculateData()
             print("calculated data")
-            self.render(parent, data, show = show)
+            self.render(data, show = show)
         else:
             print("mapping data")
             print("mapped data")
@@ -59,11 +61,12 @@ class graph:
         self.keyframes.append(keyframe(self, xmin, xmax, ymin, ymax, equation))
 
     def preview(self, keyframe = 0):
-        self.keyframes[keyframe].render(self, self.keyframes[keyframe].data, show = True)
+        self.keyframes[keyframe].render(self.keyframes[keyframe].data, show = True)
 
-    def renderAnimationself(self):
+    def renderAnimation(self):
         for keyframe in self.keyframes:
-            keyframe.calculateData(self)
+            keyframe.calculateData()
 my_graph = graph(width = 480, height = 270)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
-my_graph.preview(keyframe= 0)
+my_graph.renderAnimation()
+my_graph.preview(0)
