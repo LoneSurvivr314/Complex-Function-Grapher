@@ -62,7 +62,7 @@ class graph:
         self.keyframes[keyframe].render(self, self.keyframes[keyframe].data, show = True)
 
     def renderAnimationself(self):
-        for keyfram in self.keyframes:
+        for keyframe in self.keyframes:
             keyframe.calculateData(self)
 my_graph = graph(width = 480, height = 270)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
