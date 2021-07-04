@@ -23,7 +23,7 @@ class keyframe:
         return((
             round(phase * 40.7436654315), #change angle from (0, 2pi) to (0,256)
             round(256 - 32 * (math.log(abs(complex),2) % 1)),
-            round(256 - 64 * (math.log(abs(complex),2) % 1))
+            round(256 - 64 * (math.log(abs(complex) + math.epsilon,2) % 1))
             ))
 
     def calculateData(self): #calculate complex numbers for each point supplied
@@ -67,6 +67,7 @@ class graph:
         for keyframe in self.keyframes:
             keyframe.calculateData()
 my_graph = graph(width = 480, height = 270)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: 0)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
 my_graph.renderAnimation()
 my_graph.preview(0)
