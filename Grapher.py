@@ -9,14 +9,14 @@ def rephase(phase): # Remaps the phase of a number from (-pi,pi) to (0,2pi)
 class keyframe:
     # a keyframe holds data about view are and equation, and knows how to render itself.
     def __init__(self, parent, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
-                 equation = lambda z: (1j)**(z**2)):
-        self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax}
-        self.width = parent.width
-        self.height = parent.height
-        self.equation = equation
-        self.data = []
-        self.image = Image.new("HSV", (self.width, self.height))
-        self.data = []
+                 equation = lambda z: (1j)**(z**2), numberOfFrames = 60):
+        self.view = {"xmin":xmin,"xmax":xmax,"ymin":ymin,"ymax":ymax} #view sqaure of the keyframe in unit space
+        self.width = int(parent.width) # width in pixels of keyframe- CANNOT be interpolated
+        self.height = int(parent.height) # height in pixels of keyframe- CANNOT be interpolated
+        self.equation = equation # equation for the graph
+        self.data = [] # data for the keyframe, that holds the complex outputs of each pixel
+        self.image = Image.new("HSV", (self.width, self.height)) # the image that
+        self.numberOfFrames = int(numberOfFrames)
     
     def complexToHSV(self, complex): #return (H,S,V) tuple from a complex input
         phase = rephase(cmath.phase(complex))
@@ -67,9 +67,13 @@ class graph:
         self.keyframes[keyframe].render(self.keyframes[keyframe].data, show = True)
 
     def renderAnimation(self):
-        for keyframe in self.keyframes:
+        for keyframe in self.keyframes: # calculate data for all keyframes
             keyframe.calculateData()
-my_graph = graph(width = 1920, height = 1080)
+        for keyframe in self.keyframes:
+            
+            pass
+        
+my_graph = graph(width = 480, height = 270)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
 my_graph.renderAnimation()
