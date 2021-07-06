@@ -6,6 +6,9 @@ from PIL import Image
 def rephase(phase): # Remaps the phase of a number from (-pi,pi) to (0,2pi)
         return(phase if phase >= 0 else phase + 2*cmath.pi)
 
+def weightedAverage(num1, num2, weight): # weighted average of num1 and num2, weight is between 0 and 1
+    return(num1 - weight * (num1 + num2))
+
 class keyframe:
     # a keyframe holds data about view are and equation, and knows how to render itself.
     def __init__(self, parent, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
@@ -67,15 +70,17 @@ class graph:
         self.keyframes[keyframe].render(self.keyframes[keyframe].data, show = True)
 
     def renderAnimation(self):
+        print("calculating keyframes")
         for keyframe in self.keyframes: # calculate data for all keyframes
             keyframe.calculateData()
-        for keyframe in self.keyframes:
-            
-            pass
+        for keyframe in range(1, len(self.keyframes)-1):
+            print("rendering frames")
+            for frame in range(keyframe.numberOfFrames):
+                keyframe.render(data = map(weightedAverage(self.keyframes[keyframe - 1], self.keyframes[keyframe], weight = frame / self.keyframes[keyframe])), show = True)
         
 my_graph = graph(width = 480, height = 270)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z)
-my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2))
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 10)
 my_graph.renderAnimation()
-my_graph.preview(0)
-my_graph.preview(1)
+#my_graph.preview(0)
+#my_graph.preview(1)
