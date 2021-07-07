@@ -9,7 +9,7 @@ def rephase(phase): # Remaps the phase of a number from (-pi,pi) to (0,2pi)
 def weightedAverage(num1, num2, weight): # weighted average of num1 and num2, weight is between 0 and 1
     return(num1 - weight * (num1 + num2))
 
-def complexToHSV(self, complex): #return (H,S,V) tuple from a complex input
+def complexToHSV(complex): #return (H,S,V) tuple from a complex input
     phase = rephase(cmath.phase(complex))
     try:
         return((
@@ -49,6 +49,7 @@ class keyframe:
                     x/self.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     )))
+        print("calculated!")
         
 
 
@@ -69,7 +70,7 @@ class graph:
     
     def calculateKeyframe(self, keyframeNumber = 0):
         print("calculating data")
-        self.keyframes[keyframeNumber].calculateData
+        self.keyframes[keyframeNumber].calculateData()
 
     def renderAnimation(self):
         print("calculating keyframes")
