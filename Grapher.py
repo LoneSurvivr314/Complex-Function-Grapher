@@ -23,13 +23,16 @@ def complexToHSV(complex): #return (H,S,V) tuple from a complex input
     except ValueError:
         return((0, 224, 192))
 
-def render(data, width, height, show = True): # render data by mapping complexToHSV over it
+def render(data, width, height, show = True,
+           path = ""): # render data by mapping complexToHSV over it
     print("mapping data")
     print("mapped data")
     image = Image.new("HSV", (width, height))
     image.putdata(list(map(complexToHSV, data)))
     if show:
         image.show()
+    if path:
+        image.convert("RGB").save(path)
 
 class keyframe:
     # a keyframe holds data about view are and equation, and knows how to render itself.
@@ -54,9 +57,6 @@ class keyframe:
                     )))
         print("calculated!")
         
-
-
-
 class graph:
     # a graph holds a collection ofn keyframes, and controls them.
     def __init__(self, width = 480, height = 270):
@@ -77,20 +77,24 @@ class graph:
 
     def renderAnimation(self):
         print("calculating keyframes")
+        name = 0
         for keyframe in self.keyframes: # calculate data for all keyframes
             keyframe.calculateData()
         for keyframeNum in range(1, len(self.keyframes)):
             numberOfFrames = self.keyframes[keyframeNum].numberOfFrames
             firstData = self.keyframes[keyframeNum - 1].data
             secondData = self.keyframes[keyframeNum].data
-            for frame in range(1, numberOfFrames + 1):
+            for frame in range(0, numberOfFrames): #render each frame by interpolating between keyframes
                 render(
                        data = map(weightedAverage, firstData, secondData, repeat(frame / numberOfFrames)),
-                       width = self.width, height = self.height, show = True)
-                print(frame / numberOfFrames)
+                       width=self.width, height=self.height, show=False,
+                       path = "C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png")
+                name += 1
+                print("C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png")
         
-my_graph = graph(width = 480, height = 270)
-my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z)
-my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 10)
+        render(data = self.keyframes[len(self.keyframes)-1].data, width=self.width, height=self.height, show=False,
+               path = "C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png") #render last frame
+my_graph = graph(width = 1920, height = 1080)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z,  numberOfFrames = 10)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
 my_graph.renderAnimation()
-#print(weightedAverage(0,1,1))
