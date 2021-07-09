@@ -50,11 +50,14 @@ class keyframe:
     def calculateData(self): #calculate complex numbers for each point supplied
         for y in range(self.height):
             for x in range(self.width):
-                self.data.append(
+                try:
+                    self.data.append(
                     self.equation(complex(
                     x/self.width*(self.view["xmax"]-self.view["xmin"])+self.view["xmin"],
                     y/self.height*(self.view["ymax"]-self.view["ymin"])+self.view["ymin"]
                     )))
+                except (ValueError, ZeroDivisionError):
+                    self.data.append(cmath.nan + cmath.nanj)
         print("calculated!")
         
 class graph:
@@ -69,7 +72,7 @@ class graph:
         self.keyframes.append(keyframe(self, xmin, xmax, ymin, ymax, equation, numberOfFrames))
 
     def preview(self, keyframe = 0):
-        render(data = self.keyframes[keyframe].data, width = self.width, height = self.height, show = True)
+        render(data = self.keyframes[keyframe].data, width = self.width, height = self.height, show = True, path = False)
     
     def calculateKeyframe(self, keyframeNumber = 0):
         print("calculating data")
@@ -96,5 +99,8 @@ class graph:
                path = "C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png") #render last frame
 my_graph = graph(width = 1920, height = 1080)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z,  numberOfFrames = 10)
-my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
+#my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (z**(1j) + z**2) / (z**2 + 1j), numberOfFrames = 60)
 my_graph.renderAnimation()
+#my_graph.calculateKeyframe(1)
+#my_graph.preview(1)
