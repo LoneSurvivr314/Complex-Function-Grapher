@@ -102,5 +102,3 @@ my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = la
 #my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (z**(1j) + z**2) / (z**2 + 1j), numberOfFrames = 60)
 my_graph.renderAnimation()
-#my_graph.calculateKeyframe(1)
-#my_graph.preview(1)
