@@ -12,7 +12,7 @@ while True:
         break
 
     if event == "Add keyframe":
-        sg.popup_get_text("Enter equation")
+        sg.popup_get_text("Enter equation in terms of z", "Enter equation", "z")
     print(event, values)
 
 window.close()
