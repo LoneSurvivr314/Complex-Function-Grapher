@@ -68,8 +68,9 @@ class graph:
         self.height = height
 
     def addKeyframe(self, xmin = -1, xmax = 1, ymin = -9/16, ymax = 9/16,
-                    equation = lambda z: (1j)**(z**2), numberOfFrames = 60):
-        self.keyframes.append(keyframe(self, xmin, xmax, ymin, ymax, equation, numberOfFrames))
+                    equation = lambda z: (1j)**(z**2), numberOfFrames = 60, position = False):
+        self.keyframes.insert(position if position else len(self.keyframes), #if no position is passed, put new keyframe at the end
+            keyframe(self, xmin, xmax, ymin, ymax, equation, numberOfFrames)) #actual keyframe inputs
 
     def preview(self, keyframe = 0):
         render(data = self.keyframes[keyframe].data, width = self.width, height = self.height, show = True, path = False)
@@ -101,4 +102,4 @@ my_graph = graph(width = 1920, height = 1080)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z,  numberOfFrames = 10)
 #my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (z**(1j) + z**2) / (z**2 + 1j), numberOfFrames = 60)
-my_graph.renderAnimation()
+#my_graph.renderAnimation()
