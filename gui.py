@@ -8,12 +8,14 @@ window = sg.Window('Animation Editor', layout)
 
 while True:
     event, values = window.read()
-    if event in (sg.WIN_CLOSED, 'Exit'):
+    if event in (sg.WIN_CLOSED,'Exit'):
         break
 
     if event == "Add keyframe":
         equation = sg.popup_get_text("Enter equation in terms of z", "Enter equation", "z")
         print(equation)
+
     print(event, values)
+    print("---")
 
 window.close()
