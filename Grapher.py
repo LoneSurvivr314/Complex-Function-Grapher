@@ -92,14 +92,14 @@ class graph:
                 render(
                        data = map(weightedAverage, firstData, secondData, repeat(frame / numberOfFrames)),
                        width=self.width, height=self.height, show=False,
-                       path = "C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png")
+                       path = "C:\\Users\\BUILD-01\\Desktop\\GrapherOutput\\" + str(name).rjust(4, "0") + ".png")
                 name += 1
-                print("C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png")
+                print("C:\\Users\\BUILD-01\\Desktop\\GrapherOutput\\" + str(name).rjust(4, "0") + ".png")
         
         render(data = self.keyframes[len(self.keyframes)-1].data, width=self.width, height=self.height, show=False,
-               path = "C:\\Users\\jeffr\\Desktop\\Complex Grapher Output\\" + str(name).rjust(4, "0") + ".png") #render last frame
+               path = "C:\\Users\\BUILD-01\\Desktop\\GrapherOutput\\" + str(name).rjust(4, "0") + ".png") #render last frame
 my_graph = graph(width = 1920, height = 1080)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z,  numberOfFrames = 10)
-#my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 60)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (z**(1j) + z**2) / (z**2 + 1j), numberOfFrames = 60)
-#my_graph.renderAnimation()
+my_graph.renderAnimation()
