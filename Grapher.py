@@ -101,5 +101,6 @@ class graph:
 my_graph = graph(width = 1920, height = 1080)
 my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: z,  numberOfFrames = 10)
 #my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (1j)**(z**2), numberOfFrames = 240)
-my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (z**(1j) + z**2) / (z**2 + 1j), numberOfFrames = 240)
+#my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: (z**(1j) + z**2) / (z**2 + 1j), numberOfFrames = 240)
+my_graph.addKeyframe(xmin = -2, xmax = 2, ymin = -9/8, ymax = 9/8, equation = lambda z: ((1+5**.5)**z - (1-5**.5)**z)/(2**z * 5**.5), numberOfFrames = 240)
 my_graph.renderAnimation()
